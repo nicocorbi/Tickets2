@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navigation_consejos"
+        android:icon="@drawable/outline_add_24"
+        android:title="" />
+    <item
+        android:id="@+id/navigation_home"
+        android:icon="@drawable/outline_delete_forever_24"
+        android:title="" />
+</menu>
