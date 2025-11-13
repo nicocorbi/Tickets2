@@ -1,6 +1,8 @@
 package com.example.tickets.View;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,25 +16,41 @@ import com.example.tickets.R;
 
 public class MainActivity extends AppCompatActivity {
 
-    TestFragment fragmentMain;
-
+    ListaFragment fragmentMain;
+    NewFragment MiFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
+        ImageView iconOpen = findViewById(R.id.iconOpen);
+
+        iconOpen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction transact = fragmentManager.beginTransaction();
+                MiFragment  = new NewFragment();
+
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragmentContainer,fragmentMain)
+                        .commit();
+            }
+        });
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
-        });
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction transact = fragmentManager.beginTransaction();
 
-        fragmentMain = new TestFragment();
-        transact.replace(R.id.fragmentContainer,fragmentMain);
-        transact.commit();
+        });
+        //FragmentManager fragmentManager = getSupportFragmentManager();
+        //FragmentTransaction transact = fragmentManager.beginTransaction();
+
+        //fragmentMain = new ListaFragment();
+        //transact.replace(R.id.fragmentContainer,fragmentMain);
+        //transact.commit();
     }
+
     public static int sumar(int a, int b){
         return a+ b;
     }

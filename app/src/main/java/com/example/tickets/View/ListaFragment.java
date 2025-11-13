@@ -13,11 +13,11 @@ import android.widget.Button;
 import com.example.tickets.R;
 
 
-public class TestFragment extends Fragment {
+public class ListaFragment extends Fragment {
 
 
 
-    public TestFragment() {
+    public ListaFragment() {
         // Required empty public constructor
     }
 
