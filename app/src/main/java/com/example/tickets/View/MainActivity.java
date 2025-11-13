@@ -30,11 +30,10 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 FragmentTransaction transact = fragmentManager.beginTransaction();
-                MiFragment  = new NewFragment();
+                MiFragment = new NewFragment();
 
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragmentContainer,fragmentMain)
-                        .commit();
+                transact.replace(R.id.fragmentContainer, MiFragment);
+                transact.commit();
             }
         });
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
