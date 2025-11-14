@@ -14,10 +14,13 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.tickets.R;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
 
     // ListaFragment fragmentMain;
     NewFragment MiFragment;
+    public ArrayList<String> lista = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
