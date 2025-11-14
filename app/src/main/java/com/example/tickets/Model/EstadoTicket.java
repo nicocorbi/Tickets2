@@ -1,5 +1,5 @@
 package com.example.tickets.Model;
 
 public enum EstadoTicket {
-    NEUVO, ABIERTO,ESPERA,RESUELTO,CERRADO
+    NUEVO, ABIERTO,ESPERA,RESUELTO,CERRADO
 }

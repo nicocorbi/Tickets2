@@ -57,13 +57,15 @@ public class ListaFragment extends Fragment {
             // con un else if(getActivity()) instanceof SecondActivity podemos hacer que ese fragmento haga cosas distintas dependendiendo de la activity
         }
     }
-    public void onViewCreated(@NonNull View view, Bundle savedInstanceState){
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState){
         super.onViewCreated(view,savedInstanceState);
         ListView listView = view.findViewById(R.id.listView);
         MainActivity act = (MainActivity) getActivity();
         adapter = new ArrayAdapter<>(requireContext(),
-                android.R.layout.simple_list_item_1);
-
+                android.R.layout.simple_list_item_1,
+                act.lista);
+// para hacer que pase de un adapter a otro primero creamos un controlador que estara el ticket como tal al darle al boton del adapter
+// cogemos lo que hay en el controlador y desde este lo mandamos al otro fragmento esto lo hacemos a traves de una arraylist
 
 
 
