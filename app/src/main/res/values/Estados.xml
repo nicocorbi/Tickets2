@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="Estados">
+        <item>NUEVO</item>
+        <item>ABIERTO</item>
+        <item>CERRADO</item>
+        <item>ESPERA</item>
+        <item>RESUELTO</item>
+    </string-array>
+</resources>

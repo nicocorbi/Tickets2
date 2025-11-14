@@ -16,7 +16,7 @@ import com.example.tickets.R;
 
 public class MainActivity extends AppCompatActivity {
 
-    ListaFragment fragmentMain;
+    // ListaFragment fragmentMain;
     NewFragment MiFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
