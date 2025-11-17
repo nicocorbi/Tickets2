@@ -6,8 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".View.NewFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-
     <TextView
         android:id="@+id/textView"
         android:layout_width="match_parent"
@@ -88,7 +86,7 @@
         app:layout_constraintVertical_bias="0.18" />
 
     <EditText
-        android:id="@+id/textTitle"
+        android:id="@+id/TextDescription"
         android:layout_width="402dp"
         android:layout_height="123dp"
         android:ems="10"
@@ -99,10 +97,10 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/textView"
-        app:layout_constraintVertical_bias="0.371" />
+        app:layout_constraintVertical_bias="0.384" />
 
     <EditText
-        android:id="@+id/textTitle2"
+        android:id="@+id/textRecrearBug"
         android:layout_width="392dp"
         android:layout_height="68dp"
         android:ems="10"

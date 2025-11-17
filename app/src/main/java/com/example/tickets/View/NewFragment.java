@@ -1,71 +1,74 @@
 package com.example.tickets.View;
 
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
+import androidx.lifecycle.ViewModelProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-
+import android.widget.EditText;
 import com.example.tickets.R;
+import com.example.tickets.ViewModel.TicketViewModel;
+import com.example.tickets.Model.Ticket;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link NewFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class NewFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private TicketViewModel ticketViewModel;
+    private EditText titleEditText;
+    private EditText descriptionEditText;
+    private Button actionButton;
 
     public NewFragment() {
-        // Required empty public constructor
-    }
 
-    public static NewFragment newInstance(String param1, String param2) {
-        NewFragment fragment = new NewFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+        ticketViewModel = new ViewModelProvider(requireActivity()).get(TicketViewModel.class);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_new, container, false);
     }
-    public void onViewCreated(@NonNull View view,Bundle savedInstanceState){
-        super.onViewCreated(view,savedInstanceState);
 
-        Button EnviarTicket = (Button) view.findViewById(R.id.EnviarTicket);
-        EnviarTicket.setOnClickListener(v -> {
-            MainActivity act = (MainActivity) getActivity();
-            act.lista.add("fragmento1");
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
+        titleEditText = view.findViewById(R.id.TextTitle);
+        descriptionEditText = view.findViewById(R.id.TextDescription);
+        actionButton = view.findViewById(R.id.EnviarTicket);
 
+        ticketViewModel.getSelectedTicket().observe(getViewLifecycleOwner(), ticket -> {
+            if (ticket != null) {
+                titleEditText.setText(ticket.getTitulo());
+                descriptionEditText.setText(ticket.getDescripcion());
+                titleEditText.setEnabled(true);
+                descriptionEditText.setEnabled(true);
+                actionButton.setText("Guardar Cambios");
+                actionButton.setOnClickListener(v -> {
+                    String newTitle = titleEditText.getText().toString();
+                    String newDescription = descriptionEditText.getText().toString();
+                    ticketViewModel.updateTicket(ticket, newTitle, newDescription);
+                    getParentFragmentManager().popBackStack();
+                });
+            } else {
+                titleEditText.setText("");
+                descriptionEditText.setText("");
+                actionButton.setText("Añadir Ticket");
+                actionButton.setOnClickListener(v -> {
+                    String title = titleEditText.getText().toString();
+                    String description = descriptionEditText.getText().toString();
+                    ticketViewModel.addTicket(new Ticket(title, description));
+                    getParentFragmentManager().popBackStack();
+                });
+            }
         });
     }
-
 }

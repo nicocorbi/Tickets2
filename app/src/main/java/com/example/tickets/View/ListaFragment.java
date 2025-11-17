@@ -1,27 +1,26 @@
 package com.example.tickets.View;
 
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
+import androidx.lifecycle.ViewModelProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
-
+import com.example.tickets.Model.Ticket;
 import com.example.tickets.R;
-
+import com.example.tickets.ViewModel.TicketViewModel;
 import java.util.ArrayList;
-
+import java.util.List;
 
 public class ListaFragment extends Fragment {
-    private ArrayAdapter<String> adapter;
 
-
+    private TicketViewModel ticketViewModel;
+    private ArrayAdapter<Ticket> adapter;
+    private List<Ticket> ticketList = new ArrayList<>();
 
     public ListaFragment() {
         // Required empty public constructor
@@ -30,45 +29,35 @@ public class ListaFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        ticketViewModel = new ViewModelProvider(requireActivity()).get(TicketViewModel.class);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        // return inflater.inflate(R.layout.fragment_test, container, false);
+        return inflater.inflate(R.layout.fragment_test, container, false);
+    }
 
-        View rootView = inflater.inflate(R.layout.fragment_test,container,false);
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
-        Button button1 = (Button) rootView.findViewById(R.id.button1);
+        ListView listView = view.findViewById(R.id.listView);
+        adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1, ticketList);
+        listView.setAdapter(adapter);
 
-        button1.setOnClickListener(v -> {
-
+        ticketViewModel.getTickets().observe(getViewLifecycleOwner(), tickets -> {
+            ticketList.clear();
+            ticketList.addAll(tickets);
+            adapter.notifyDataSetChanged();
         });
 
-        return rootView;
+        listView.setOnItemClickListener((parent, view1, position, id) -> {
+            Ticket selectedTicket = ticketList.get(position);
+            ticketViewModel.selectTicket(selectedTicket);
+            if (getActivity() instanceof MainActivity) {
+                ((MainActivity) getActivity()).navigateToNewFragment();
+            }
+        });
     }
-    @Override
-    public void onStart(){
-        super.onStart();
-        if(getActivity() instanceof MainActivity){// instanceof pregunta si es una instancia de mainActivity y evita los nulos
-           // ((MainActivity) getActivity()).test(1,2);//llamo a una funcion del mainactivity
-            // con un else if(getActivity()) instanceof SecondActivity podemos hacer que ese fragmento haga cosas distintas dependendiendo de la activity
-        }
-    }
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState){
-        super.onViewCreated(view,savedInstanceState);
-        ListView listView = view.findViewById(R.id.listView);
-        MainActivity act = (MainActivity) getActivity();
-        adapter = new ArrayAdapter<>(requireContext(),
-                android.R.layout.simple_list_item_1,
-                act.lista);
-// para hacer que pase de un adapter a otro primero creamos un controlador que estara el ticket como tal al darle al boton del adapter
-// cogemos lo que hay en el controlador y desde este lo mandamos al otro fragmento esto lo hacemos a traves de una arraylist
-
-
-
-    }
-
 }
