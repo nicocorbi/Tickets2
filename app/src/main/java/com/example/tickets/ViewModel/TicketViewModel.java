@@ -23,13 +23,14 @@ public class TicketViewModel extends ViewModel {
         }
     }
 
-    public void updateTicket(Ticket oldTicket, String newTitle, String newDescription) {
+    public void updateTicket(Ticket oldTicket, String newTitle, String newDescription, String newRecrearBug) {
         List<Ticket> currentTickets = tickets.getValue();
         if (currentTickets != null) {
             for (int i = 0; i < currentTickets.size(); i++) {
                 if (currentTickets.get(i) == oldTicket) {
                     currentTickets.get(i).setTitulo(newTitle);
                     currentTickets.get(i).setDescripcion(newDescription);
+                    currentTickets.get(i).setRecrearBug(newRecrearBug);
                     break;
                 }
             }

@@ -19,6 +19,7 @@ public class NewFragment extends Fragment {
     private TicketViewModel ticketViewModel;
     private EditText titleEditText;
     private EditText descriptionEditText;
+    private EditText RecrearBugEditText;
     private Button actionButton;
 
     public NewFragment() {
@@ -43,29 +44,35 @@ public class NewFragment extends Fragment {
 
         titleEditText = view.findViewById(R.id.TextTitle);
         descriptionEditText = view.findViewById(R.id.TextDescription);
+        RecrearBugEditText = view.findViewById(R.id.textRecrearBug);
         actionButton = view.findViewById(R.id.EnviarTicket);
 
         ticketViewModel.getSelectedTicket().observe(getViewLifecycleOwner(), ticket -> {
             if (ticket != null) {
                 titleEditText.setText(ticket.getTitulo());
                 descriptionEditText.setText(ticket.getDescripcion());
+                RecrearBugEditText.setText(ticket.getRecrearBug());
                 titleEditText.setEnabled(true);
                 descriptionEditText.setEnabled(true);
+                RecrearBugEditText.setEnabled(true);
                 actionButton.setText("Guardar Cambios");
                 actionButton.setOnClickListener(v -> {
                     String newTitle = titleEditText.getText().toString();
                     String newDescription = descriptionEditText.getText().toString();
-                    ticketViewModel.updateTicket(ticket, newTitle, newDescription);
+                    String newRecrearBug = RecrearBugEditText.getText().toString();
+                    ticketViewModel.updateTicket(ticket, newTitle, newDescription, newRecrearBug);
                     getParentFragmentManager().popBackStack();
                 });
             } else {
                 titleEditText.setText("");
                 descriptionEditText.setText("");
+                RecrearBugEditText.setText("");
                 actionButton.setText("Añadir Ticket");
                 actionButton.setOnClickListener(v -> {
                     String title = titleEditText.getText().toString();
                     String description = descriptionEditText.getText().toString();
-                    ticketViewModel.addTicket(new Ticket(title, description));
+                    String RecrearBug = RecrearBugEditText.getText().toString();
+                    ticketViewModel.addTicket(new Ticket(title, description, RecrearBug));
                     getParentFragmentManager().popBackStack();
                 });
             }
