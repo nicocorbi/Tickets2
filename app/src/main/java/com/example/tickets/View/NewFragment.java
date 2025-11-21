@@ -8,8 +8,12 @@ import androidx.lifecycle.ViewModelProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
+
+import com.example.tickets.Model.EstadoTicket;
 import com.example.tickets.R;
 import com.example.tickets.ViewModel.TicketViewModel;
 import com.example.tickets.Model.Ticket;
@@ -20,6 +24,7 @@ public class NewFragment extends Fragment {
     private EditText titleEditText;
     private EditText descriptionEditText;
     private EditText RecrearBugEditText;
+    private Spinner statusSpinner;
     private Button actionButton;
 
     public NewFragment() {
@@ -39,13 +44,18 @@ public class NewFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view,Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         titleEditText = view.findViewById(R.id.TextTitle);
         descriptionEditText = view.findViewById(R.id.TextDescription);
         RecrearBugEditText = view.findViewById(R.id.textRecrearBug);
+        statusSpinner = view.findViewById(R.id.spinner);
         actionButton = view.findViewById(R.id.EnviarTicket);
+
+        ArrayAdapter<EstadoTicket> adapter = new ArrayAdapter<>(requireContext(),android.R.layout.simple_spinner_item, EstadoTicket.values());
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        statusSpinner.setAdapter(adapter);
 
         ticketViewModel.getSelectedTicket().observe(getViewLifecycleOwner(), ticket -> {
             if (ticket != null) {
@@ -60,7 +70,8 @@ public class NewFragment extends Fragment {
                     String newTitle = titleEditText.getText().toString();
                     String newDescription = descriptionEditText.getText().toString();
                     String newRecrearBug = RecrearBugEditText.getText().toString();
-                    ticketViewModel.updateTicket(ticket, newTitle, newDescription, newRecrearBug);
+                    EstadoTicket newStatus = (EstadoTicket) statusSpinner.getSelectedItem();
+                    ticketViewModel.updateTicket(ticket, newTitle, newDescription, newRecrearBug,newStatus);
                     getParentFragmentManager().popBackStack();
                 });
             } else {
@@ -71,9 +82,15 @@ public class NewFragment extends Fragment {
                 actionButton.setOnClickListener(v -> {
                     String title = titleEditText.getText().toString();
                     String description = descriptionEditText.getText().toString();
-                    String RecrearBug = RecrearBugEditText.getText().toString();
-                    ticketViewModel.addTicket(new Ticket(title, description, RecrearBug));
+                    String recrearBug = RecrearBugEditText.getText().toString();
+                    EstadoTicket status = (EstadoTicket) statusSpinner.getSelectedItem();
+
+                    Ticket newTicket = new Ticket(title, description, recrearBug);
+                    newTicket.setEstado(status);
+
+                    ticketViewModel.addTicket(newTicket);
                     getParentFragmentManager().popBackStack();
+
                 });
             }
         });

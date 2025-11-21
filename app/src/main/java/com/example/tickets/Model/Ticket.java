@@ -6,14 +6,14 @@ public class Ticket implements Serializable {
 
     private String titulo;
     private String descripcion;
-    private String estado;
+    private EstadoTicket estado;
     private String RecrearBug;
 
     public Ticket(String titulo, String descripcion, String textrecrearBug) {
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.RecrearBug = textrecrearBug;
-        this.estado = "Abierto";
+        this.estado = EstadoTicket.NUEVO;
     }
 
     public String getTitulo() {
@@ -34,12 +34,18 @@ public class Ticket implements Serializable {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
-    public String getEstado() {
+
+    public EstadoTicket getEstado() {
         return estado;
     }
+    public void setEstado(EstadoTicket estado) {
+        this.estado = estado;
+    }
+
 
     @Override
     public String toString() {
-        return titulo;
+        return titulo + " (" + estado.toString() + ")";
+
     }
 }

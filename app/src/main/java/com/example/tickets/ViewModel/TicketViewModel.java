@@ -3,6 +3,8 @@ package com.example.tickets.ViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+
+import com.example.tickets.Model.EstadoTicket;
 import com.example.tickets.Model.Ticket;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +25,7 @@ public class TicketViewModel extends ViewModel {
         }
     }
 
-    public void updateTicket(Ticket oldTicket, String newTitle, String newDescription, String newRecrearBug) {
+    public void updateTicket(Ticket oldTicket, String newTitle, String newDescription, String newRecrearBug, EstadoTicket newStatus) {
         List<Ticket> currentTickets = tickets.getValue();
         if (currentTickets != null) {
             for (int i = 0; i < currentTickets.size(); i++) {
