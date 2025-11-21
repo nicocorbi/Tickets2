@@ -32,6 +32,7 @@ public class TicketViewModel extends ViewModel {
                 if (currentTickets.get(i) == oldTicket) {
                     currentTickets.get(i).setTitulo(newTitle);
                     currentTickets.get(i).setDescripcion(newDescription);
+                    currentTickets.get(i).setEstado(newStatus);
                     currentTickets.get(i).setRecrearBug(newRecrearBug);
                     break;
                 }
