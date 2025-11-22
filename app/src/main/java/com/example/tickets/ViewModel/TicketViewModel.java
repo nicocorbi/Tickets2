@@ -1,72 +1,71 @@
 package com.example.tickets.ViewModel;
 
 import android.app.Application;
-import android.content.Context;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
 import com.example.tickets.Model.EstadoTicket;
 import com.example.tickets.Model.Ticket;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.Closeable;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
+
 
 public class TicketViewModel extends AndroidViewModel {
-    private final MutableLiveData<List<Ticket>> tickets = new MutableLiveData<>(new ArrayList<>());
-    private final MutableLiveData<Ticket> selectedTicket = new MutableLiveData<>();
 
+    private final MutableLiveData<List<Ticket>> tickets = new MutableLiveData<>();
+    private final MutableLiveData<Ticket> selectedTicket = new MutableLiveData<>();
     private final TicketManager ticketManager;
 
-
-    public TicketViewModel(@NonNull Application application){
+    public TicketViewModel(@NonNull Application application) {
         super(application);
-        ticketManager = new TicketManager(application);
-        tickets.setValue(ticketManager.loadTickets());
 
+        ticketManager = new TicketManager(application);
+        
+        List<Ticket> initialTickets = ticketManager.loadTickets();
+        if (initialTickets == null) {
+            initialTickets = new ArrayList<>();
+        }
+        tickets.setValue(initialTickets);
     }
 
     public LiveData<List<Ticket>> getTickets() {
         return tickets;
     }
 
-
     public void addTicket(Ticket ticket) {
-        List<Ticket> list = tickets.getValue();
-            list.add(ticket);
-            tickets.setValue(list);
-            ticketManager.saveTickets(list);
-
+        List<Ticket> currentList = tickets.getValue();
+        if (currentList != null) {
+            currentList.add(ticket);
+            tickets.setValue(currentList);
+            ticketManager.saveTickets(currentList);
         }
     }
 
     public void updateTicket(Ticket oldTicket, String newTitle, String newDescription, String newRecrearBug, EstadoTicket newStatus) {
-        List<Ticket> list = tickets.getValue();
-            for (Ticket t : list) {
-                if (t == oldTicket) {
+        List<Ticket> currentList = tickets.getValue();
+        if (currentList != null && oldTicket != null) {
+            for (Ticket t : currentList) {
+                if (Objects.equals(t.getTitulo(), oldTicket.getTitulo()) &&
+                    Objects.equals(t.getDescripcion(), oldTicket.getDescripcion()) &&
+                    Objects.equals(t.getRecrearBug(), oldTicket.getRecrearBug()) &&
+                    t.getEstado() == oldTicket.getEstado()) {
+                    
                     t.setTitulo(newTitle);
                     t.setDescripcion(newDescription);
-                    t.setEstado(newStatus);
                     t.setRecrearBug(newRecrearBug);
+                    t.setEstado(newStatus);
                     break;
                 }
             }
-            tickets.setValue(list);
-            ticketManager.saveTickets(list);
+            tickets.setValue(currentList);
+            ticketManager.saveTickets(currentList);
         }
-
-
+    }
 
     public void selectTicket(Ticket ticket) {
         selectedTicket.setValue(ticket);
